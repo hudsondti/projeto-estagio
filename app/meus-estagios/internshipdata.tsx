@@ -1,6 +1,6 @@
 "use client";
 
-import { Ellipsis, Edit, Trash2, Save, X } from "lucide-react";
+import { Ellipsis, Edit, Trash2, Save, X, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   Table,
@@ -159,7 +159,12 @@ export default function InternshipData() {
                       onClick={handleEditClick}
                       className="cursor-pointer flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                     >
-                      <Edit className="w-4 h-4 cursor-pointer" />
+                      {fields.length > 0 ? (
+                        <Edit className="w-4 h-4 cursor-pointer" />
+                      ) : (
+                        <Plus className="w-4 h-4 cursor-pointer" />
+                      )}
+
                       {fields.length > 0 ? "Editar" : "Adicionar"}
                     </button>
                     <button
