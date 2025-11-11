@@ -85,7 +85,7 @@ export default function InternshipData() {
   const handleDeleteClick = () => {
     console.log("Apagar clicado");
     setShowModal(false);
-    // Aqui você pode adicionar a lógica para apagar
+    //adicionar a lógica para apagar
   };
 
   const handleInputChange = (field: keyof InternshipData, value: string) => {
@@ -160,7 +160,7 @@ export default function InternshipData() {
                       className="cursor-pointer flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                     >
                       <Edit className="w-4 h-4 cursor-pointer" />
-                      Editar
+                      {fields.length > 0 ? "Editar" : "Adicionar"}
                     </button>
                     <button
                       onClick={handleDeleteClick}
