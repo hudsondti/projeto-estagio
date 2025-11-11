@@ -29,17 +29,17 @@ export default function InternshipData() {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState<InternshipData>({
-    nome: "Jair Messias Lula da Silva",
-    orientador: "Donald Joaquim Nabuco",
-    concedente: "Hospital Santa Fé",
-    supervisor: "Vladimir Gnar da Silva",
-    dataInicio: "15/01/2025",
-    dataTermino: "15/01/2027",
-    cargaHoraria: "30h",
-    valorBolsa: "R$ 700,00",
-    auxilioTransporte: "R$ 120,00",
-    seguro: "Sim",
-    tce: "Enviado",
+    nome: "",
+    orientador: "",
+    concedente: "",
+    supervisor: "",
+    dataInicio: "",
+    dataTermino: "",
+    cargaHoraria: "",
+    valorBolsa: "",
+    auxilioTransporte: "",
+    seguro: "",
+    tce: "",
   });
   const [editedData, setEditedData] = useState<InternshipData>(data);
 
