@@ -81,7 +81,7 @@ export default function InfoNewInternshipPage() {
         </Link>
         <Link
           href="/meus-estagios/novo-estagio"
-          className="text-white text-[16px] leading-5 font-semibold bg-[#605BFF] px-8 py-2 rounded-md"
+          className="text-white text-[16px] leading-5 font-semibold bg-[#605BFF] hover:opacity-55 px-8 py-2 rounded-md"
         >
           Criar Novo Estágio
         </Link>

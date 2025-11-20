@@ -4,9 +4,15 @@ import { contentHeader } from "./ContentHeader";
 import Image from "next/image";
 import { LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function Header() {
   const pathname = usePathname();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <section className="relative w-[196px] h-screen">
@@ -59,23 +65,27 @@ export default function Header() {
       <div className="flex items-center gap-5 absolute bottom-[60px] left-[30px]">
         <Image
           src="/assets/aluno.jpeg"
-          alt="EngWeb Logo"
+          alt="Foto do usuário"
           width={45}
           height={40}
           quality={100}
           priority
-          className="rounded-[12px] obje"
+          className="rounded-[12px] object-cover"
         />
         <div className="flex items-center gap-[30px] ">
           <div className="flex flex-col gap-1">
             <h4 className="text-[#000000] text-[24px] leading-5 font-semibold">
-              Hudson
+              {user?.name || "Hudson"}
             </h4>
             <p className="text-[#00000052] text-[16px] leading-5 font-normal">
               Aluno
             </p>
           </div>
-          <button>
+          <button
+            onClick={handleLogout}
+            className="hover:bg-gray-100 p-2 rounded-full transition-colors"
+            title="Sair"
+          >
             <LogOut className="w-6 h-6 text-[#030229]" />
           </button>
         </div>
