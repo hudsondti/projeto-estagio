@@ -14,6 +14,13 @@ export default function Header() {
     logout();
   };
 
+  // Função para extrair e formatar o primeiro nome
+  const getFormattedFirstName = () => {
+    if (!user?.name.split(" ")[0]) return "Estudante";
+    const firstName = user.name.trim().split(" ")[0];
+    return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+  };
+
   return (
     <section className="relative w-[196px] h-screen">
       <header className="pl-[30px] py-[50px] flex flex-col gap-[36px]">
@@ -75,7 +82,7 @@ export default function Header() {
         <div className="flex items-center gap-[30px] ">
           <div className="flex flex-col gap-1">
             <h4 className="text-[#000000] text-[24px] leading-5 font-semibold">
-              {user?.name || "Hudson"}
+              {getFormattedFirstName()}
             </h4>
             <p className="text-[#00000052] text-[16px] leading-5 font-normal">
               Aluno

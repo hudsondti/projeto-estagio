@@ -28,6 +28,11 @@ export default function CadastroAlunoPage() {
       newErrors.name = "Nome deve ter pelo menos 2 caracteres";
     }
 
+    // Validação da matrícula
+    if (!formData.matricula.trim()) {
+      newErrors.matricula = "Matrícula é obrigatória";
+    }
+
     // Validação do email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
@@ -186,10 +191,10 @@ export default function CadastroAlunoPage() {
               placeholder="Digite seu número de matrícula"
             />
           </div>
-          {errors.email && (
+          {errors.matricula && (
             <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.email}
+              {errors.matricula}
             </p>
           )}
         </div>

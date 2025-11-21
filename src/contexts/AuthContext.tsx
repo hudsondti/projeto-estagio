@@ -73,7 +73,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
 
-      // Simulação de chamada para API - substitua pela sua implementação real
+      // SIMULAÇÃO para desenvolvimento - remova quando tiver API real
+      // Simular delay da requisição
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Validação simples para desenvolvimento
+      if (!email || !password) {
+        throw new Error("Email e senha são obrigatórios");
+      }
+
+      // Simulação de dados de resposta
+      const simulatedResponse = {
+        token: "dev_token_" + Date.now(),
+        user: {
+          id: Date.now().toString(),
+          name: email.split("@")[0], // Usar parte do email como nome
+          email: email,
+          role: "student",
+        },
+      };
+
+      // Salvar token e dados do usuário
+      localStorage.setItem("authToken", simulatedResponse.token);
+      localStorage.setItem("userData", JSON.stringify(simulatedResponse.user));
+
+      setUser(simulatedResponse.user);
+      router.push("/inicio");
+
+      /* CÓDIGO REAL DA API - descomente quando implementar o backend
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -94,6 +121,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       setUser(data.user);
       router.push("/inicio");
+      */
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       throw error;
@@ -110,7 +138,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
 
-      // Simulação de chamada para API - substitua pela sua implementação real
+      // SIMULAÇÃO para desenvolvimento - remova quando tiver API real
+      // Simular delay da requisição
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Simulação de dados de resposta
+      const simulatedResponse = {
+        token: "dev_token_" + Date.now(),
+        user: {
+          id: Date.now().toString(),
+          name: name,
+          email: email,
+          role: "student",
+        },
+      };
+
+      // Salvar token e dados do usuário
+      localStorage.setItem("authToken", simulatedResponse.token);
+      localStorage.setItem("userData", JSON.stringify(simulatedResponse.user));
+
+      setUser(simulatedResponse.user);
+      router.push("/inicio");
+
+      /* CÓDIGO REAL DA API - descomente quando implementar o backend
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
@@ -131,6 +181,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       setUser(data.user);
       router.push("/inicio");
+      */
     } catch (error) {
       console.error("Erro ao registrar:", error);
       throw error;
