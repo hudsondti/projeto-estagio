@@ -21,6 +21,21 @@ export default function Header() {
     return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
   };
 
+  // Função para obter o nome do role em português
+  const getRoleDisplayName = () => {
+    if (!user?.role) return "Usuário";
+    switch (user.role) {
+      case "aluno":
+        return "Aluno";
+      case "professor":
+        return "Professor";
+      case "coordenador":
+        return "Coordenador";
+      default:
+        return "Usuário";
+    }
+  };
+
   return (
     <section className="relative w-[196px] h-screen">
       <header className="pl-[30px] py-[50px] flex flex-col gap-[36px]">
@@ -35,7 +50,7 @@ export default function Header() {
             />
           </Link>
           <h1 className="text-[#030229] text-[24px] leading-[32px] font-semibold">
-            Aluno
+            {getRoleDisplayName()}
           </h1>
         </div>
         <div className="flex flex-col gap-[30px]">
@@ -82,10 +97,10 @@ export default function Header() {
         <div className="flex items-center gap-[30px] ">
           <div className="flex flex-col gap-1">
             <h4 className="text-[#000000] text-[24px] leading-5 font-semibold">
-              {getFormattedFirstName()}
+              {user?.name || "Usuário"}
             </h4>
             <p className="text-[#00000052] text-[16px] leading-5 font-normal">
-              Aluno
+              {getRoleDisplayName()}
             </p>
           </div>
           <button

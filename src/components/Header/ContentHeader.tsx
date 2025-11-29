@@ -16,9 +16,9 @@ export const contentHeader = [
     title: "Mensagens",
     href: "/mensagens",
   },
-  {
-    icon: <Bell className="w-5 h-5" />,
-    title: "Notificações",
-    href: "/notificacoes",
-  },
+  // {
+  //   icon: <Bell className="w-5 h-5" />,
+  //   title: "Notificações",
+  //   href: "/notificacoes",
+  // },
 ];

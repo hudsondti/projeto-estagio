@@ -67,7 +67,13 @@ export default function CadastroAlunoPage() {
     }
 
     try {
-      await register(formData.name, formData.email, formData.password);
+      await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: "aluno",
+        matricula: formData.matricula,
+      });
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "Erro ao criar conta",

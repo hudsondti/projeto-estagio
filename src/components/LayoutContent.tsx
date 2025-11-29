@@ -4,6 +4,8 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { usePathname } from "next/navigation";
 import Header from "@/src/components/Header/Header";
 import ProtectedRoute from "@/src/components/ProtectedRoute";
+import { useDevShortcuts } from "@/src/hooks/useDevShortcuts";
+import { DevToolsIndicator } from "@/src/components/DevToolsIndicator";
 
 interface LayoutContentProps {
   children: React.ReactNode;
@@ -12,6 +14,9 @@ interface LayoutContentProps {
 export default function LayoutContent({ children }: LayoutContentProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const pathname = usePathname();
+
+  // Ativar atalhos de desenvolvimento
+  useDevShortcuts();
 
   // Páginas que não precisam de autenticação (e não devem mostrar header/sidebar)
   const authPages = ["/login", "/cadastro", "/recuperar-senha"];
@@ -48,6 +53,9 @@ export default function LayoutContent({ children }: LayoutContentProps) {
           <main className="flex-1 ml-[280px] bg-gray-200 min-h-screen p-8">
             {children}
           </main>
+
+          {/* Indicador de ferramentas de desenvolvimento */}
+          <DevToolsIndicator />
         </div>
       )}
     </ProtectedRoute>
