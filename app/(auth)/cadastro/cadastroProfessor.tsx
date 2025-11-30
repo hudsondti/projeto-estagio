@@ -1,12 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/src/contexts/AuthContext";
 import Link from "next/link";
-import { Eye, EyeOff, User, Mail, Lock, AlertCircle } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Mail,
+  Lock,
+  AlertCircle,
+  RectangleEllipsis,
+} from "lucide-react";
 
 export default function CadastroProfessorPage() {
-  const { register, isLoading } = useAuth();
+  const register = String;
+  const isLoading = false;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -62,7 +70,13 @@ export default function CadastroProfessorPage() {
     }
 
     try {
-      await register(formData.name, formData.email, formData.password);
+      await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: "aluno",
+        matricula: formData.matricula,
+      });
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "Erro ao criar conta",
@@ -170,7 +184,7 @@ export default function CadastroProfessorPage() {
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Mail className="h-5 w-5 text-gray-400" />
+              <RectangleEllipsis className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="text"
@@ -183,7 +197,7 @@ export default function CadastroProfessorPage() {
                   ? "border-red-300 bg-red-50"
                   : "border-gray-300 focus:border-[#605BFF]"
               }`}
-              placeholder="Digite seu número de matrícula"
+              placeholder="Número do Siape"
             />
           </div>
           {errors.email && (

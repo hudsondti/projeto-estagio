@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/src/contexts/AuthContext";
 import Link from "next/link";
 import { Eye, EyeOff, Mail, Lock, AlertCircle } from "lucide-react";
+import api from "@/src/services/api";
 
 export default function LoginPage() {
-  const { login, isLoading } = useAuth();
+  // const { login, isLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -35,6 +35,7 @@ export default function LoginPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Tentando fazer login com:", formData);
     e.preventDefault();
 
     if (!validateForm()) {
@@ -42,7 +43,28 @@ export default function LoginPage() {
     }
 
     try {
-      await login(formData.email, formData.password);
+      const response = await api.post("/auth/login", {
+        emailInstitucional: formData.email,
+        password: formData.password,
+      });
+
+      console.log("response", response.data);
+
+      const { name, token, role, profileId } = response.data;
+      console.log("Login bem-sucedido:", response.data);
+
+      // Armazenar token e dados do usuário no localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", name);
+      localStorage.setItem("role", role);
+      localStorage.setItem("userId", profileId);
+
+      if (role && role === "ROLE_ALUNO")
+        return (window.location.href = "/aluno/inicio");
+      if (role && role === "ROLE_PROFESSOR")
+        return (window.location.href = "/professor/inicio");
+      if (role && role === "ROLE_COORDENADOR")
+        return (window.location.href = "/coordenador/inicio");
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "Erro ao fazer login",
@@ -152,22 +174,22 @@ export default function LoginPage() {
         </div>
 
         {/* Link "Esqueci minha senha" */}
-        <div className="text-right">
+        {/* <div className="text-right">
           <Link
             href="/recuperar-senha"
             className="text-sm text-[#605BFF] hover:text-[#4F46E5] transition-colors"
           >
             Esqueci minha senha
           </Link>
-        </div>
+        </div> */}
 
         {/* Botão Submit */}
         <button
           type="submit"
-          disabled={isLoading}
-          className="w-full bg-[#605BFF] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#4F46E5] focus:ring-2 focus:ring-[#605BFF] focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          // disabled={isLoading}
+          className="cursor-pointer w-full bg-[#605BFF] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#4F46E5] focus:ring-2 focus:ring-[#605BFF] focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Entrando..." : "Entrar"}
+          Entrar
         </button>
       </form>
 

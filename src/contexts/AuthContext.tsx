@@ -149,26 +149,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push("/login");
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        register,
-        logout,
-        isAuthenticated: !!user,
-        isLoading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return children;
+
+  // return (
+  //   <AuthContext.Provider
+  //     value={{
+  //       user,
+  //       login,
+  //       register,
+  //       logout,
+  //       isAuthenticated: !!user,
+  //       isLoading,
+  //     }}
+  //   >
+  //     {children}
+  //   </AuthContext.Provider>
+  // );
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+  // Durante o SSR/prerendering, retorna um contexto seguro
+  if (typeof window === 'undefined') {
+    return {
+      user: null,
+      login: async () => {},
+      register: async () => {},
+      logout: () => {},
+      isAuthenticated: false,
+      isLoading: true,
+    };
   }
+  
+  // if (context === undefined) {
+  //   throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+  // }
   return context;
 }

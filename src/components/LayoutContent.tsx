@@ -2,10 +2,10 @@
 
 import { useAuth } from "@/src/contexts/AuthContext";
 import { usePathname } from "next/navigation";
-import Header from "@/src/components/Header/Header";
 import ProtectedRoute from "@/src/components/ProtectedRoute";
 import { useDevShortcuts } from "@/src/hooks/useDevShortcuts";
 import { DevToolsIndicator } from "@/src/components/DevToolsIndicator";
+import SideBar from "./Header/SideBar";
 
 interface LayoutContentProps {
   children: React.ReactNode;
@@ -45,7 +45,7 @@ export default function LayoutContent({ children }: LayoutContentProps) {
           {/* Sidebar com Header */}
           <aside className="w-[280px] bg-white shadow-lg border-r border-gray-200 fixed h-full z-10">
             <div className="p-6">
-              <Header />
+              <SideBar />
             </div>
           </aside>
 

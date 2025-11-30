@@ -112,6 +112,12 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.container-dashboard{
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
