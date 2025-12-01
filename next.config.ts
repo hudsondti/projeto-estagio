@@ -13,7 +13,22 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
+        destination: "/login",
+        permanent: true,
+      },
+      {
+        source: "/aluno/",
         destination: "/aluno/inicio",
+        permanent: true,
+      },
+      {
+        source: "/professor/",
+        destination: "/professor/inicio",
+        permanent: true,
+      },
+      {
+        source: "/coordenador/",
+        destination: "/coordenador/inicio",
         permanent: true,
       },
     ];
