@@ -204,7 +204,7 @@ export function OrientadosCard({
     return (
       <div className="bg-white rounded-lg shadow-sm border">
         <div className="flex justify-center items-center py-16">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#605BFF]"></div>
           <span className="ml-4 text-gray-500">Carregando orientandos...</span>
         </div>
       </div>
@@ -218,7 +218,7 @@ export function OrientadosCard({
           <p className="text-red-500 text-lg mb-4">{error}</p>
           <button
             onClick={onRefresh}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            className="px-4 py-2 bg-[#605BFF] text-white rounded-md hover:bg-[#504EDD] transition-colors"
           >
             Tentar Novamente
           </button>
@@ -236,7 +236,7 @@ export function OrientadosCard({
           </h2>
           <button
             onClick={onRefresh}
-            className="px-3 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            className="cursor-pointer px-3 py-1 text-sm bg-[#605BFF] text-white rounded-md hover:bg-[#504EDD] transition-colors"
           >
             Atualizar
           </button>

@@ -25,7 +25,7 @@ export default function CadastroPage() {
           >
             Aluno
           </button>
-          <button
+          {/* <button
             type="submit"
             onClick={() => setCurrentView("professor")}
             className={`${
@@ -37,13 +37,14 @@ export default function CadastroPage() {
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
           >
             Professor
-          </button>
+          </button> */}
         </div>
-        {currentView === "aluno" ? (
+        <CadastroAlunoPage />
+        {/* {currentView === "aluno" ? (
           <CadastroAlunoPage />
         ) : (
           <CadastroProfessorPage />
-        )}
+        )} */}
       </div>
     </section>
   );

@@ -11,16 +11,16 @@ import {
   AlertCircle,
   RectangleEllipsis,
 } from "lucide-react";
+import api from "@/src/services/api";
 
 export default function CadastroAlunoPage() {
-  const register = String;
-  const isLoading = false;
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    nome: "",
+    emailInstitucional: "",
     matricula: "",
-    password: "",
-    confirmPassword: "",
+    senha: "",
+    confirmSenha: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [showPassword, setShowPassword] = useState(false);
@@ -30,72 +30,90 @@ export default function CadastroAlunoPage() {
     const newErrors: { [key: string]: string } = {};
 
     // Validação do nome
-    if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Nome deve ter pelo menos 2 caracteres";
+    if (!formData.nome.trim()) {
+      newErrors.nome = "Nome é obrigatório";
+    } else if (formData.nome.trim().length < 2) {
+      newErrors.nome = "Nome deve ter pelo menos 2 caracteres";
     }
 
     // Validação da matrícula
     if (!formData.matricula.trim()) {
       newErrors.matricula = "Matrícula é obrigatória";
+    } else if (formData.matricula.trim().length > 11) {
+      newErrors.matricula = "Matrícula deve ter no máximo 11 caracteres";
+    } else if (formData.matricula.trim().length < 6) {
+      newErrors.matricula = "Matrícula deve ter pelo menos 6 caracteres";
     }
 
     // Validação do email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email.trim()) {
-      newErrors.email = "Email é obrigatório";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Email inválido";
+    if (!formData.emailInstitucional.trim()) {
+      newErrors.emailInstitucional = "Email é obrigatório";
+    } else if (!emailRegex.test(formData.emailInstitucional)) {
+      newErrors.emailInstitucional = "Email inválido";
     }
 
     // Validação da senha
-    if (!formData.password) {
-      newErrors.password = "Senha é obrigatória";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Senha deve ter pelo menos 6 caracteres";
+    if (!formData.senha) {
+      newErrors.senha = "Senha é obrigatória";
+    } else if (formData.senha.length < 6) {
+      newErrors.senha = "Senha deve ter pelo menos 6 caracteres";
     }
 
     // Validação da confirmação de senha
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Confirmação de senha é obrigatória";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Senhas não coincidem";
+    if (!formData.confirmSenha) {
+      newErrors.confirmSenha = "Confirmação de senha é obrigatória";
+    } else if (formData.senha !== formData.confirmSenha) {
+      newErrors.confirmSenha = "Senhas não coincidem";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    // Limitar matrícula a 11 caracteres
+    if (name === "matricula" && value.length > 11) {
+      return; // Não atualizar se exceder 11 caracteres
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Limpar erro específico quando o usuário começar a digitar
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Cadastrando aluno", formData);
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
+    setIsLoading(true);
     try {
-      await register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        role: "aluno",
+      const response = await api.post("/auth/register/aluno", {
+        nome: formData.nome,
+        emailInstitucional: formData.emailInstitucional,
         matricula: formData.matricula,
+        senha: formData.senha,
       });
-    } catch (error) {
+
+      console.log("Cadastro realizado com sucesso:", response.data);
+      alert("Cadastro realizado com sucesso! Faça login para continuar.");
+      window.location.href = "/login";
+    } catch (error: any) {
+      console.error("Erro no cadastro:", error);
       setErrors({
-        general: error instanceof Error ? error.message : "Erro ao criar conta",
+        general: error?.response?.data?.message || "Erro ao criar conta",
       });
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    // Limpar erro específico quando o usuário começar a digitar
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -126,21 +144,21 @@ export default function CadastroAlunoPage() {
             <input
               type="text"
               id="name"
-              name="name"
-              value={formData.name}
+              name="nome"
+              value={formData.nome}
               onChange={handleInputChange}
               className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-[#605BFF] focus:border-transparent transition-colors ${
-                errors.name
+                errors.nome
                   ? "border-red-300 bg-red-50"
                   : "border-gray-300 focus:border-[#605BFF]"
               }`}
               placeholder="Digite seu nome completo"
             />
           </div>
-          {errors.name && (
+          {errors.nome && (
             <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.name}
+              {errors.nome}
             </p>
           )}
         </div>
@@ -160,21 +178,21 @@ export default function CadastroAlunoPage() {
             <input
               type="email"
               id="email"
-              name="email"
-              value={formData.email}
+              name="emailInstitucional"
+              value={formData.emailInstitucional}
               onChange={handleInputChange}
               className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-[#605BFF] focus:border-transparent transition-colors ${
-                errors.email
+                errors.emailInstitucional
                   ? "border-red-300 bg-red-50"
                   : "border-gray-300 focus:border-[#605BFF]"
               }`}
               placeholder="Digite seu email"
             />
           </div>
-          {errors.email && (
+          {errors.emailInstitucional && (
             <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.email}
+              {errors.emailInstitucional}
             </p>
           )}
         </div>
@@ -197,12 +215,13 @@ export default function CadastroAlunoPage() {
               name="matricula"
               value={formData.matricula}
               onChange={handleInputChange}
+              maxLength={11}
               className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-[#605BFF] focus:border-transparent transition-colors ${
                 errors.matricula
                   ? "border-red-300 bg-red-50"
                   : "border-gray-300 focus:border-[#605BFF]"
               }`}
-              placeholder="Número da Matrícula"
+              placeholder="Número da Matrícula (máx. 11 caracteres)"
             />
           </div>
           {errors.matricula && (
@@ -228,11 +247,11 @@ export default function CadastroAlunoPage() {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              name="password"
-              value={formData.password}
+              name="senha"
+              value={formData.senha}
               onChange={handleInputChange}
               className={`block w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#605BFF] focus:border-transparent transition-colors ${
-                errors.password
+                errors.senha
                   ? "border-red-300 bg-red-50"
                   : "border-gray-300 focus:border-[#605BFF]"
               }`}
@@ -250,10 +269,10 @@ export default function CadastroAlunoPage() {
               )}
             </button>
           </div>
-          {errors.password && (
+          {errors.senha && (
             <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.password}
+              {errors.senha}
             </p>
           )}
         </div>
@@ -273,11 +292,11 @@ export default function CadastroAlunoPage() {
             <input
               type={showConfirmPassword ? "text" : "password"}
               id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
+              name="confirmSenha"
+              value={formData.confirmSenha}
               onChange={handleInputChange}
               className={`block w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-[#605BFF] focus:border-transparent transition-colors ${
-                errors.confirmPassword
+                errors.confirmSenha
                   ? "border-red-300 bg-red-50"
                   : "border-gray-300 focus:border-[#605BFF]"
               }`}
@@ -295,10 +314,10 @@ export default function CadastroAlunoPage() {
               )}
             </button>
           </div>
-          {errors.confirmPassword && (
+          {errors.confirmSenha && (
             <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.confirmPassword}
+              {errors.confirmSenha}
             </p>
           )}
         </div>
@@ -307,7 +326,7 @@ export default function CadastroAlunoPage() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-[#605BFF] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#4F46E5] focus:ring-2 focus:ring-[#605BFF] focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="cursor-pointer w-full bg-[#605BFF] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#4F46E5] focus:ring-2 focus:ring-[#605BFF] focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? "Criando conta..." : "Criar conta"}
         </button>

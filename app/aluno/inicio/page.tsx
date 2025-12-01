@@ -1,8 +1,8 @@
 "use client";
-import { Search } from "lucide-react";
+
 import Image from "next/image";
-import UpdateModal from "../meus-estagios/upadateModal";
 import { useEffect, useState } from "react";
+import InformacaoEstagio from "./components/InformacaoEstagio";
 
 export default function StartPage() {
   const [userName, setUserName] = useState<string>("Usuário");
@@ -70,7 +70,7 @@ export default function StartPage() {
       </section> */}
 
       <div className="py-[100px]">
-        <UpdateModal />
+        <InformacaoEstagio />
       </div>
     </section>
   );
