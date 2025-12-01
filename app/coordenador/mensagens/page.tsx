@@ -43,7 +43,7 @@ export default function ProfessorMeusEstagiosPage() {
           >
             Estágios
           </button>
-          <button
+          {/* <button
             onClick={() => setCurrentView("Confirmacoes")}
             className={`py-5 px-3 ${
               currentView === "Confirmacoes"
@@ -52,7 +52,7 @@ export default function ProfessorMeusEstagiosPage() {
             } cursor-pointer hover:opacity-90 transition-opacity`}
           >
             Confirmações
-          </button>
+          </button> */}
         </div>
       </div>
 

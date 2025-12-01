@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import api from "@/src/services/api";
+import CadastrarProfessorModal from "./CadastrarProfessorPage";
 
 interface ProfessorData {
   id: string;
@@ -25,6 +26,7 @@ export default function ProfessorPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showModalCadastrar, setShowModalCadastrar] = useState(false);
 
   useEffect(() => {
     const fetchProfessores = async () => {
@@ -82,10 +84,19 @@ export default function ProfessorPage() {
             Gerencie os professores cadastrados no sistema
           </p>
         </div>
-        <button className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#605BFF] hover:bg-[#5048E5] text-white font-medium rounded-lg transition-colors">
+        <button
+          onClick={() => setShowModalCadastrar(true)}
+          className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#605BFF] hover:bg-[#5048E5] text-white font-medium rounded-lg transition-colors"
+        >
           <Plus className="w-4 h-4 mr-2" />
           Novo Professor
         </button>
+        {showModalCadastrar && (
+          <CadastrarProfessorModal
+            isOpen={showModalCadastrar}
+            onClose={() => setShowModalCadastrar(false)}
+          />
+        )}
       </div>
 
       {/* Search */}
