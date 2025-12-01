@@ -92,6 +92,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
   const currentNavigation = navigationItems || getDefaultNavigation();
   const roleColor = getRoleColor();
   const [userName, setUserName] = useState<string>("Usuário");
+  const [userRole, setUserRole] = useState<string>("Usuário");
 
   const getFirstName = (fullName: string): string => {
     if (!fullName) return "Usuário";
@@ -100,12 +101,35 @@ export default function SideBar({ navigationItems }: SideBarProps) {
     return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
   };
 
+  // Função para converter role da API para nome em português
+  const getRoleDisplayName = (role: string): string => {
+    if (!role) return "Usuário";
+
+    switch (role) {
+      case "ROLE_ALUNO":
+        return "Aluno";
+      case "ROLE_PROFESSOR":
+        return "Professor";
+      case "ROLE_COORDENADOR":
+        return "Coordenador";
+      default:
+        return "Usuário";
+    }
+  };
+
   // Carregar dados do usuário do localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+    const storedRole = localStorage.getItem("role");
+
     if (storedUser) {
       const firstName = getFirstName(storedUser);
       setUserName(firstName);
+    }
+
+    if (storedRole) {
+      const roleDisplayName = getRoleDisplayName(storedRole);
+      setUserRole(roleDisplayName);
     }
   }, []);
 
@@ -123,7 +147,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
             />
           </Link>
           <h1 className="text-[#030229] text-[24px] leading-[32px] font-semibold">
-            {/* {getRoleDisplayName()} */}
+            {userRole}
           </h1>
         </div>
         <div className="flex flex-col gap-[30px]">
@@ -177,7 +201,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
               {userName}
             </h4>
             <p className="text-[#00000052] text-[16px] leading-5 font-normal">
-              {/* {getRoleDisplayName()} */}
+              {userRole}
             </p>
           </div>
           <button

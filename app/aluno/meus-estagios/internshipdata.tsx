@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/table";
 import api from "@/src/services/api";
 import StageReportTracker from "./stagereportTracker";
+import ConcluirEstagioModal from "./ConcluirEstagioModal";
+import RescendirEstagioModal from "./RescendirEstagioModal";
 
 interface InternshipData {
   id: string;
@@ -44,6 +46,7 @@ interface InternshipData {
 }
 
 interface EstagioUpdateDTO {
+  id: string;
   orientadorId: string;
   concedente: string;
   supervisor: string;
@@ -66,6 +69,8 @@ export default function InternshipData() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editedData, setEditedData] = useState<Partial<InternshipData>>({});
+  const [showModalConcluir, setShowModalConcluir] = useState(false);
+  const [showModalRescindir, setShowModalRescindir] = useState(false);
 
   // Carregar dados da API ao inicializar
   useEffect(() => {
@@ -111,6 +116,7 @@ export default function InternshipData() {
 
       // Criar DTO no formato esperado pela API Java
       const updateDTO: EstagioUpdateDTO = {
+        id: data.id,
         orientadorId: "", // Você precisará implementar a lógica para obter o ID do orientador
         concedente: editedData.concedente || data.concedente,
         supervisor: editedData.supervisor || data.supervisor,
@@ -329,19 +335,35 @@ export default function InternshipData() {
                         Editar
                       </button>
                       <button
-                        onClick={handleDeleteClick}
+                        onClick={() => setShowModalConcluir(true)}
                         className="cursor-pointer flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                       >
                         <CheckLine className="w-4 h-4" />
                         Concluir
                       </button>
+                      {showModalConcluir && (
+                        <ConcluirEstagioModal
+                          isOpen={showModalConcluir}
+                          onClose={() => setShowModalConcluir(false)}
+                          onSuccess={() => {}}
+                          estagioId={data.id}
+                        />
+                      )}
                       <button
-                        onClick={handleDeleteClick}
+                        onClick={() => setShowModalRescindir(true)}
                         className="cursor-pointer flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
                       >
                         <Ban className="w-4 h-4" />
                         Rescindir
                       </button>
+                      {showModalRescindir && (
+                        <RescendirEstagioModal
+                          isOpen={showModalRescindir}
+                          onClose={() => setShowModalRescindir(false)}
+                          onSuccess={() => {}}
+                          estagioId={data.id}
+                        />
+                      )}
                     </div>
                   </div>
                 </>
