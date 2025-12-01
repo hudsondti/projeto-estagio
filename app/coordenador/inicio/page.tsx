@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from "@/src/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import api from "@/src/services/api";
 
@@ -87,12 +86,31 @@ export default function ProfessorInicioPage() {
     );
   }
 
+  const [userName, setUserName] = useState<string>("Usuário");
+
+  // Função para obter o primeiro nome do usuário e capitalizar
+  const getFirstName = (fullName: string): string => {
+    if (!fullName) return "Usuário";
+
+    const firstName = fullName.trim().split(" ")[0];
+    return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+  };
+
+  // Carregar dados do usuário do localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const firstName = getFirstName(storedUser);
+      setUserName(firstName);
+    }
+  }, []);
+
   return (
     <section className="">
       <div className="flex flex-col gap-8">
         <div className="flex items-center justify-between">
           <h1 className="text-black text-[32px] font-bold leading-8 mb-2">
-            Bem Vindo <span className="text-blue-600">Hudson</span>!
+            Bem Vindo <span className="text-[#605BFF]">{userName}</span>
           </h1>
         </div>
         <Image

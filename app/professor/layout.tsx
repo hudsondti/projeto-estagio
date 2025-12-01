@@ -1,9 +1,6 @@
 "use client";
 
-import { useAuth } from "@/src/contexts/AuthContext";
-import { usePermissions } from "@/src/hooks/usePermissions";
-import { useRouter } from "next/navigation";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import SideBar from "@/src/components/Header/SideBar";
 import { logout } from "@/src/services/auth";
 

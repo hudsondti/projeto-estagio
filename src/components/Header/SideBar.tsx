@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { LogOut, Grip, MessageSquareDot, File } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/src/contexts/AuthContext";
 import { logout } from "@/src/services/auth";
+import { useEffect, useState } from "react";
 
 interface NavigationItem {
   icon: React.ReactNode;
@@ -91,6 +91,23 @@ export default function SideBar({ navigationItems }: SideBarProps) {
 
   const currentNavigation = navigationItems || getDefaultNavigation();
   const roleColor = getRoleColor();
+  const [userName, setUserName] = useState<string>("Usuário");
+
+  const getFirstName = (fullName: string): string => {
+    if (!fullName) return "Usuário";
+
+    const firstName = fullName.trim().split(" ")[0];
+    return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+  };
+
+  // Carregar dados do usuário do localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const firstName = getFirstName(storedUser);
+      setUserName(firstName);
+    }
+  }, []);
 
   return (
     <section className="relative w-[350px] h-screen shadow-lg bg-white">
@@ -157,7 +174,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
         <div className="flex items-center gap-[30px] ">
           <div className="flex flex-col gap-1">
             <h4 className="text-[#000000] text-[24px] leading-5 font-semibold">
-              {"Usuário"}
+              {userName}
             </h4>
             <p className="text-[#00000052] text-[16px] leading-5 font-normal">
               {/* {getRoleDisplayName()} */}

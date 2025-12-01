@@ -1,6 +1,15 @@
 "use client";
 
-import { Ellipsis, Edit, Trash2, Save, X, Plus } from "lucide-react";
+import {
+  Ellipsis,
+  Edit,
+  Trash2,
+  Save,
+  X,
+  Plus,
+  CheckLine,
+  Ban,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   Table,
@@ -316,20 +325,22 @@ export default function InternshipData() {
                         onClick={handleEditClick}
                         className="cursor-pointer flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       >
-                        {data ? (
-                          <Edit className="w-4 h-4 cursor-pointer" />
-                        ) : (
-                          <Plus className="w-4 h-4 cursor-pointer" />
-                        )}
-
-                        {data ? "Editar" : "Adicionar"}
+                        <Edit className="w-4 h-4 cursor-pointer" />
+                        Editar
+                      </button>
+                      <button
+                        onClick={handleDeleteClick}
+                        className="cursor-pointer flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
+                      >
+                        <CheckLine className="w-4 h-4" />
+                        Concluir
                       </button>
                       <button
                         onClick={handleDeleteClick}
                         className="cursor-pointer flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
-                        Apagar
+                        <Ban className="w-4 h-4" />
+                        Rescindir
                       </button>
                     </div>
                   </div>

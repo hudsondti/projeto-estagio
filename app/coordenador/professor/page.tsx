@@ -2,10 +2,7 @@
 
 import { useState, useEffect } from "react";
 import api from "@/src/services/api";
-import Image from "next/image";
-import { OrientadosCard } from "../inicio/components/OrientadosCard";
 import ProfessorPage from "./components/ProfessorPage";
-import Link from "next/link";
 
 interface Relatorio {
   id: string;
