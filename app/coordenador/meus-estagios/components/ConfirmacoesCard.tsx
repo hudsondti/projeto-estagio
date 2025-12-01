@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import api from "@/src/services/api";
+import AprovarEstagioModal from "./AprovarEstagioModal";
 
 // Interfaces baseadas nos DTOs Java
 interface EstagioResponseDTO {
@@ -76,6 +77,9 @@ export default function ConfirmacoesCard() {
   const [currentPageRelatorios, setCurrentPageRelatorios] = useState(1);
   const [currentPageAditivos, setCurrentPageAditivos] = useState(1);
   const itemsPerPage = 3;
+  const [selectedEstagioId, setSelectedEstagioId] = useState<string | null>(
+    null
+  );
 
   // Estados para dados da API
   const [dashboardData, setDashboardData] = useState<DashboardPendenciasDTO>({
@@ -361,19 +365,21 @@ export default function ConfirmacoesCard() {
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-center gap-2">
                       <button
-                        className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        onClick={() => setSelectedEstagioId(estagio.id)}
+                        className=" cursor-pointer p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                         title="Visualizar"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
+
                       <button
-                        className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                        className="cursor-pointer p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                         title="Aprovar"
                       >
                         <Check className="w-4 h-4" />
                       </button>
                       <button
-                        className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="cursor-pointer p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         title="Rejeitar"
                       >
                         <X className="w-4 h-4" />
@@ -505,6 +511,15 @@ export default function ConfirmacoesCard() {
           </>
         )}
       </div>
+
+      {/* Modal único para todos os estágios */}
+      {selectedEstagioId && (
+        <AprovarEstagioModal
+          isOpen={!!selectedEstagioId}
+          onClose={() => setSelectedEstagioId(null)}
+          estagioId={selectedEstagioId}
+        />
+      )}
     </div>
   );
 }
