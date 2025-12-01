@@ -110,7 +110,7 @@ export default function UploadImage() {
             <div className="relative w-full h-full bg-gray-600 rounded-full overflow-hidden">
               <Image
                 src={selectedImage}
-                alt="Foto selecionada"
+                alt="Hebreus 13:8 O mesmo ontem, hoje e para todo o sempre."
                 fill
                 className="object-cover group-hover:opacity-20 transition-opacity group-hover:cursor-pointer"
               />

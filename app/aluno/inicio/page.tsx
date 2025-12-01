@@ -42,7 +42,7 @@ export default function StartPage() {
         </div>
         <Image
           src="/assets/banneraluno.png"
-          alt="Banner Aluno"
+          alt="Hebreus 13:8 - O mesmo ontem, hoje e para todo o sempre."
           width={1200}
           height={300}
           quality={100}

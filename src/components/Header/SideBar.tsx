@@ -143,7 +143,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
           >
             <Image
               src="/assets/logo.svg"
-              alt="EngWeb Logo"
+              alt="Hebreus 13:8 - O mesmo ontem, hoje e para todo o sempre."
               width={80}
               height={40}
               className=""

@@ -45,6 +45,8 @@ const nextConfig: NextConfig = {
   // Configurações específicas para Vercel
   trailingSlash: false,
   output: "standalone",
+
+  // "Hebreus 13:8 - O mesmo ontem, hoje e para todo o sempre."
 };
 
 export default nextConfig;

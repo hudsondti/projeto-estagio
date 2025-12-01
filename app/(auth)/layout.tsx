@@ -19,7 +19,7 @@ export default function AuthLayout({
             <div className="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4">
               <Image
                 src="/assets/logo.svg"
-                alt="EngWeb Logo"
+                alt="Hebreus 13:8 - O mesmo ontem, hoje e para todo o sempre."
                 width={80}
                 height={40}
               />
@@ -37,7 +37,7 @@ export default function AuthLayout({
       <div className="flex items-center justify-between">
         <Image
           src="/assets/cadastropage.svg"
-          alt="EngWeb Logo"
+          alt="Hebreus 13:8 - O mesmo ontem, hoje e para todo o sempre."
           width={693}
           height={472}
         />
