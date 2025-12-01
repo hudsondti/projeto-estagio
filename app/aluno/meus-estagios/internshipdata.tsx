@@ -117,7 +117,7 @@ export default function InternshipData() {
       // Criar DTO no formato esperado pela API Java
       const updateDTO: EstagioUpdateDTO = {
         id: data.id,
-        orientadorId: "", // Você precisará implementar a lógica para obter o ID do orientador
+        orientadorId: "", //implementar a lógica para obter o ID do orientador
         concedente: editedData.concedente || data.concedente,
         supervisor: editedData.supervisor || data.supervisor,
         formacaoSupervisor:
@@ -377,14 +377,14 @@ export default function InternshipData() {
               <p className="text-red-500 text-sm">{error}</p>
               <button
                 onClick={() => window.location.reload()}
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                className="cursor-pointer mt-2 px-4 py-2 bg-[#605BFF] text-white rounded-md hover:bg-[#5048E5] transition-colors"
               >
                 Tentar Novamente
               </button>
             </div>
           ) : loading ? (
             <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#605BFF] mx-auto mb-4" />
               <p className="text-gray-500">Carregando dados...</p>
             </div>
           ) : !data ? (
@@ -427,7 +427,7 @@ export default function InternshipData() {
                                   e.target.value === "true"
                                 )
                               }
-                              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#605BFF] focus:border-transparent"
                             >
                               <option value="true">Sim</option>
                               <option value="false">Não</option>
@@ -462,7 +462,7 @@ export default function InternshipData() {
                               step={
                                 field.type === "number" ? "0.01" : undefined
                               }
-                              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#605BFF] focus:border-transparent"
                             />
                           )
                         ) : (
