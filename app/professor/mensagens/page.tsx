@@ -49,7 +49,7 @@ export default function ProfessorMeusEstagiosPage() {
             className={`py-5 px-3 ${
               currentView === "Confirmacoes"
                 ? "bg-[#605BFF] text-white rounded-tr-sm rounded-br-sm"
-                : "bg-[#605BFF] text-black rounded-tl-sm rounded-bl-sm"
+                : "bg-[#605BFF] text-white rounded-tl-sm rounded-bl-sm"
             } cursor-pointer hover:opacity-90 transition-opacity`}
           >
             Confirmações

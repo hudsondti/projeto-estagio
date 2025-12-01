@@ -137,7 +137,10 @@ export default function SideBar({ navigationItems }: SideBarProps) {
     <section className="relative w-[350px] h-screen shadow-lg bg-white">
       <header className="pl-[30px] py-[50px] flex flex-col gap-[36px]">
         <div className="flex items-center gap-4">
-          <Link href="/" className="flex items-center flex-shrink-0">
+          <Link
+            href={`${getBaseRoute()}/inicio`}
+            className="flex items-center flex-shrink-0"
+          >
             <Image
               src="/assets/logo.svg"
               alt="EngWeb Logo"

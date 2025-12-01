@@ -10,6 +10,41 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import api from "@/src/services/api";
+
+interface ApiEstagioData {
+  id: string;
+  statusEstagio: string;
+  alunoNomeCompleto: string;
+  matricula: string;
+  orientadorNomeCompleto: string;
+  concedente: string;
+  supervisor: string;
+  formacaoSupervisor: string | null;
+  dataInicio: string;
+  dataTermino: string;
+  cargaHorariaSemanal: number;
+  valorBolsa: number;
+  auxilioTransporte: boolean;
+  valorAuxilioTransporte: number;
+  seguro: boolean;
+  dataEntregaTCE: string;
+  dataEntregaPlanoDeAtividades: string;
+  relatorios: Array<{
+    id: string;
+    titulo: string;
+    dataEntregaPrevista: string;
+    dataEntregaEfetiva: string | null;
+    statusTexto: string;
+    statusCor: string;
+  }>;
+  aditivos: Array<{
+    id: string;
+    novaDataTermino: string;
+    status: string;
+    descricao: string;
+  }>;
+}
 
 interface AlunoEstagioData {
   id: string;
@@ -27,73 +62,55 @@ interface AlunoEstagioData {
 }
 
 export default function AlunosDoProfessor() {
-  const [alunos, setAlunos] = useState<AlunoEstagioData[]>([
-    {
-      id: "1",
-      matricula: "2024201622",
-      nome: "Liz Guilherme Souza",
-      professorOrientador: "Eduardo Pelli",
-      dataInicio: "12 Dec. 2020",
-      dataTermino: "12 Dec. 2020",
-      status: "Ativo",
-    },
-    {
-      id: "2",
-      matricula: "2024201622",
-      nome: "Paulin da Viola",
-      professorOrientador: "Eduardo Pelli",
-      dataInicio: "12 Dec. 2020",
-      dataTermino: "12 Dec. 2020",
-      status: "Concluído",
-    },
-    {
-      id: "3",
-      matricula: "2024201622",
-      nome: "Tiago Nigro Segundo",
-      professorOrientador: "Eduardo Pelli",
-      dataInicio: "12 Dec. 2020",
-      dataTermino: "12 Dec. 2020",
-      status: "Rescindido",
-    },
-    {
-      id: "4",
-      matricula: "2024201622",
-      nome: "Hudson Ferinha",
-      professorOrientador: "Eduardo Pelli",
-      dataInicio: "12 Dec. 2020",
-      dataTermino: "12 Dec. 2020",
-      status: "Ativo",
-    },
-    {
-      id: "5",
-      matricula: "2024201622",
-      nome: "Janja Lula da Silva",
-      professorOrientador: "Eduardo Pelli",
-      dataInicio: "12 Dec. 2020",
-      dataTermino: "12 Dec. 2020",
-      status: "Quase vencendo",
-    },
-    {
-      id: "6",
-      matricula: "2024201622",
-      nome: "Tiago Nigro Segundo",
-      professorOrientador: "Eduardo Pelli",
-      dataInicio: "12 Dec. 2020",
-      dataTermino: "12 Dec. 2020",
-      status: "Relatório Atrasado",
-    },
-    {
-      id: "7",
-      matricula: "2024201622",
-      nome: "Otavio Pe Vermelho",
-      professorOrientador: "Eduardo Pelli",
-      dataInicio: "12 Dec. 2020",
-      dataTermino: "12 Dec. 2020",
-      status: "Ativo",
-    },
-  ]);
+  const [alunos, setAlunos] = useState<AlunoEstagioData[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Função para mapear status da API para status de exibição
+  const mapStatusEstagio = (
+    statusEstagio: string
+  ): AlunoEstagioData["status"] => {
+    switch (statusEstagio) {
+      case "ATIVO":
+        return "Ativo";
+      case "CONCLUIDO":
+        return "Concluído";
+      case "RESCINDIDO":
+      case "ANALISE_RESCINDIDO":
+        return "Rescindido";
+      case "VENCENDO":
+        return "Quase vencendo";
+      case "RELATORIO_ATRASADO":
+        return "Relatório Atrasado";
+      default:
+        return "Ativo";
+    }
+  };
+
+  // Função para formatar data
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  // Função para transformar dados da API no formato do componente
+  const transformApiData = (apiData: ApiEstagioData[]): AlunoEstagioData[] => {
+    return apiData.map((estagio) => ({
+      id: estagio.id,
+      matricula: estagio.matricula,
+      nome: estagio.alunoNomeCompleto,
+      professorOrientador: estagio.orientadorNomeCompleto,
+      dataInicio: formatDate(estagio.dataInicio),
+      dataTermino: formatDate(estagio.dataTermino),
+      status: mapStatusEstagio(estagio.statusEstagio),
+    }));
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -113,29 +130,72 @@ export default function AlunosDoProfessor() {
   };
 
   const handleSelectItem = (id: string) => {
-    setSelectedItems((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+    setSelectedItem((prev) => (prev === id ? null : id));
   };
 
-  const handleSelectAll = () => {
-    if (selectedItems.length === alunos.length) {
-      setSelectedItems([]);
-    } else {
-      setSelectedItems(alunos.map((aluno) => aluno.id));
-    }
-  };
+  useEffect(() => {
+    const fetchAlunos = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await api.get("/api/professores/meus-estagios", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          },
+        });
+
+        const transformedData = transformApiData(response.data);
+        setAlunos(transformedData);
+      } catch (error: any) {
+        console.error("Erro ao carregar alunos:", error);
+        setError(
+          error.response?.data?.message || "Erro ao carregar dados dos estágios"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAlunos();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg border shadow-sm p-8">
+        <div className="flex justify-center items-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <span className="ml-3 text-gray-600">Carregando estágios...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-white rounded-lg border shadow-sm p-8">
+        <div className="text-center text-red-600">
+          <p className="text-lg font-medium">Erro ao carregar dados</p>
+          <p className="text-sm mt-2">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+          >
+            Tentar novamente
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg border shadow-sm">
       {/* Header Actions */}
       <div className="p-4 border-b bg-gray-50">
         <div className="flex items-center gap-4">
-          {selectedItems.length > 0 && (
+          {selectedItem && (
             <>
-              <span className="text-sm text-gray-600">
-                {selectedItems.length} item(s) selecionado(s)
-              </span>
+              <span className="text-sm text-gray-600">1 aluno selecionado</span>
               <button className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors">
                 <FileText className="w-4 h-4" />
                 Detalhes
@@ -158,14 +218,7 @@ export default function AlunosDoProfessor() {
       <Table>
         <TableHeader>
           <TableRow className="bg-gray-50">
-            <TableHead className="w-12 px-4">
-              <input
-                type="checkbox"
-                checked={selectedItems.length === alunos.length}
-                onChange={handleSelectAll}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-            </TableHead>
+            <TableHead className="w-12 px-4">Seleção</TableHead>
             <TableHead className="font-medium text-gray-700 px-4">
               Matrícula ▼
             </TableHead>
@@ -192,10 +245,11 @@ export default function AlunosDoProfessor() {
             <TableRow key={aluno.id} className="hover:bg-gray-50">
               <TableCell className="px-4">
                 <input
-                  type="checkbox"
-                  checked={selectedItems.includes(aluno.id)}
+                  type="radio"
+                  name="selectedAluno"
+                  checked={selectedItem === aluno.id}
                   onChange={() => handleSelectItem(aluno.id)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
               </TableCell>
               <TableCell className="px-4 font-medium text-gray-900">
@@ -235,6 +289,16 @@ export default function AlunosDoProfessor() {
           ))}
         </TableBody>
       </Table>
+
+      {alunos.length === 0 && !loading && (
+        <div className="text-center py-12">
+          <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+          <p className="text-gray-500">Nenhum estágio encontrado</p>
+          <p className="text-sm text-gray-400 mt-1">
+            Você ainda não possui alunos orientandos com estágios ativos
+          </p>
+        </div>
+      )}
     </div>
   );
 }
