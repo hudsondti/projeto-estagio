@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AlunosDoProfessor from "./components/AlunosDoProfessor";
 
 export default function ProfessorMeusEstagiosPage() {
   const user = true;
@@ -33,7 +34,7 @@ export default function ProfessorMeusEstagiosPage() {
           </h1>
         </div>
         <div>
-          <button
+          {/* <button
             onClick={() => setCurrentView("Estagios")}
             className={`py-5 px-3 ${
               currentView === "Estagios"
@@ -42,13 +43,13 @@ export default function ProfessorMeusEstagiosPage() {
             } cursor-pointer hover:opacity-90 transition-opacity`}
           >
             Estágios
-          </button>
+          </button> */}
           <button
             onClick={() => setCurrentView("Confirmacoes")}
             className={`py-5 px-3 ${
               currentView === "Confirmacoes"
                 ? "bg-[#605BFF] text-white rounded-tr-sm rounded-br-sm"
-                : "bg-white text-black rounded-tl-sm rounded-bl-sm"
+                : "bg-[#605BFF] text-black rounded-tl-sm rounded-bl-sm"
             } cursor-pointer hover:opacity-90 transition-opacity`}
           >
             Confirmações
@@ -74,7 +75,9 @@ export default function ProfessorMeusEstagiosPage() {
         </div>
       </section> */}
 
-      <div className="py-[100px]">Hudson</div>
+      <div className="py-[100px]">
+        <AlunosDoProfessor />
+      </div>
     </section>
   );
 }

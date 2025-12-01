@@ -58,7 +58,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
       case "/aluno":
         return "#3B82F6"; // blue-500
       case "/professor":
-        return "#10B981"; // green-500
+        return "#605BFF"; // roxo-500
       case "/coordenador":
         return "#8B5CF6"; // purple-500
       default:
@@ -137,7 +137,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
     <section className="relative w-[350px] h-screen shadow-lg bg-white">
       <header className="pl-[30px] py-[50px] flex flex-col gap-[36px]">
         <div className="flex items-center gap-4">
-          <Link href="/inicio" className="flex items-center flex-shrink-0">
+          <Link href="/" className="flex items-center flex-shrink-0">
             <Image
               src="/assets/logo.svg"
               alt="EngWeb Logo"

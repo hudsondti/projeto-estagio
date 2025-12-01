@@ -141,7 +141,7 @@ export default function InternshipData() {
           data.dataEntregaPlanoDeAtividades,
       };
 
-      const response = await api.put(
+      const response = await api.patch(
         `/api/estagios/${data.id}/atualizar`,
         updateDTO,
         {
