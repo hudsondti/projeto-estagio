@@ -1,5 +1,6 @@
 "use client";
 
+import AlunosDoProfessor from "@/app/professor/mensagens/components/AlunosDoProfessor";
 import { useState } from "react";
 
 export default function ProfessorMeusEstagiosPage() {
@@ -74,7 +75,9 @@ export default function ProfessorMeusEstagiosPage() {
         </div>
       </section> */}
 
-      <div className="py-[100px]">Hudson</div>
+      <div className="py-[100px]">
+        <AlunosDoProfessor />
+      </div>
     </section>
   );
 }
