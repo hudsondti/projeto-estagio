@@ -1,11 +1,9 @@
 "use client";
 
-import { useAuth } from "@/src/contexts/AuthContext";
-import { usePermissions } from "@/src/hooks/usePermissions";
-import { useRouter } from "next/navigation";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import SideBar from "@/src/components/Header/SideBar";
 import { logout } from "@/src/services/auth";
+import { Grip, File, MessageSquareDot, Users } from "lucide-react";
 
 interface ProfessorLayoutProps {
   children: React.ReactNode;
@@ -35,10 +33,34 @@ export default function ProfessorLayout({ children }: ProfessorLayoutProps) {
     }
   }, []);
 
+  // Navegação específica para coordenador incluindo a rota de professor
+  const coordenadorNavigation = [
+    {
+      icon: <Grip className="w-5 h-5" />,
+      title: "Início",
+      href: "/coordenador/inicio",
+    },
+    {
+      icon: <File className="w-5 h-5" />,
+      title: "Meus Estágios",
+      href: "/coordenador/meus-estagios",
+    },
+    {
+      icon: <Users className="w-5 h-5" />,
+      title: "Professor",
+      href: "/coordenador/professor",
+    },
+    {
+      icon: <MessageSquareDot className="w-5 h-5" />,
+      title: "Mensagens",
+      href: "/coordenador/mensagens",
+    },
+  ];
+
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar Inteligente - Detecta automaticamente as rotas /professor/* */}
-      <SideBar />
+      {/* Sidebar com navegação específica do coordenador */}
+      <SideBar navigationItems={coordenadorNavigation} />
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">

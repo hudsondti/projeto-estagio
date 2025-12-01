@@ -59,7 +59,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
         return "#3B82F6"; // blue-500
       case "/professor":
         return "#10B981"; // green-500
-      case "/cordenador":
+      case "/coordenador":
         return "#8B5CF6"; // purple-500
       default:
         return "#0059FF";
@@ -163,7 +163,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
                   className={`transition-all duration-300 ease-in-out group-hover:scale-110 ${
                     isActive
                       ? "text-[color:var(--role-color)]"
-                      : "text-[#030229] group-hover:text-[#0059FF]"
+                      : "text-[#030229] group-hover:text-[#605BFF]"
                   }`}
                   style={isActive ? { color: roleColor } : {}}
                 >
@@ -174,7 +174,7 @@ export default function SideBar({ navigationItems }: SideBarProps) {
                   className={`text-[16px] leading-[24px] transition-all duration-300 ease-in-out ${
                     isActive
                       ? "text-[color:var(--role-color)] font-bold"
-                      : "text-[#030229] font-semibold group-hover:text-[#0059FF]"
+                      : "text-[#030229] font-semibold group-hover:text-[#605BFF]"
                   }`}
                   style={isActive ? { color: roleColor } : {}}
                 >

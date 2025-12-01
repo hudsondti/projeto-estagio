@@ -15,9 +15,9 @@ import api from "@/src/services/api";
 interface ProfessorData {
   id: string;
   nome: string;
-  email: string;
-  siape: string;
-  estagiosAtivos: number;
+  emailInstitucional: string;
+  siap: string;
+  totalEsagiosativos: number;
 }
 
 export default function ProfessorPage() {
@@ -50,7 +50,9 @@ export default function ProfessorPage() {
   const filteredProfessores = professores.filter(
     (professor) =>
       professor.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      professor.email.toLowerCase().includes(searchTerm.toLowerCase())
+      professor.emailInstitucional
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -80,7 +82,7 @@ export default function ProfessorPage() {
             Gerencie os professores cadastrados no sistema
           </p>
         </div>
-        <button className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+        <button className="cursor-pointer inline-flex items-center px-4 py-2 bg-[#605BFF] hover:bg-[#5048E5] text-white font-medium rounded-lg transition-colors">
           <Plus className="w-4 h-4 mr-2" />
           Novo Professor
         </button>
@@ -136,16 +138,23 @@ export default function ProfessorPage() {
                 <TableCell className="px-6 py-4">
                   <div className="flex items-center space-x-2">
                     <Mail className="w-4 h-4 text-gray-400" />
-                    <span className="text-gray-700">{professor.email}</span>
+                    <span className="text-gray-700">
+                      {professor.emailInstitucional}
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell className="px-6 py-4">
-                  <span className="text-gray-700">{professor.siape}</span>
+                  <span className="text-gray-700">{professor.siap}</span>
                 </TableCell>
                 <TableCell className="px-6 py-4">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {professor.estagiosAtivos} estágios ativos
-                  </span>
+                  <div className="flex items-center">
+                    <span className="text-[#605BFF] text-[20px]">
+                      {professor.totalEsagiosativos}
+                    </span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium  text-black ">
+                      estágios ativos
+                    </span>
+                  </div>
                 </TableCell>
                 <TableCell className="px-6 py-4 text-center flex items-center">
                   <button className="p-2 hover:bg-blue-200 rounded-lg transition-colors">
@@ -176,7 +185,7 @@ export default function ProfessorPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-lg border">
           <div className="flex items-center">
-            <User className="w-8 h-8 text-blue-500" />
+            <User className="w-8 h-8 text-[#605BFF]" />
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">
                 Total de Professores
@@ -197,7 +206,7 @@ export default function ProfessorPage() {
               </p>
               <p className="text-2xl font-bold text-gray-900">
                 {professores.reduce(
-                  (total, prof) => total + prof.estagiosAtivos,
+                  (total, prof) => total + prof.totalEsagiosativos,
                   0
                 )}
               </p>
@@ -216,7 +225,7 @@ export default function ProfessorPage() {
                 {professores.length > 0
                   ? Math.round(
                       professores.reduce(
-                        (total, prof) => total + prof.estagiosAtivos,
+                        (total, prof) => total + prof.totalEsagiosativos,
                         0
                       ) / professores.length
                     )
